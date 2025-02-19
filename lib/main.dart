@@ -17,12 +17,12 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   int happinessLevel = 50;
   int hungerLevel = 50;
   TextEditingController petNameController = TextEditingController();
+
   int energyLevel= 100;
   Timer? _hungerTimer;
   final int _winDuration = 1; // Duration in seconds (3 minutes)
   int _winCounter = 0;
   String selectedAction = 'Play';
-
 // Function to increase happiness and update hunger when playing with the pet
   void _playWithPet() {
     setState(() {
@@ -76,11 +76,11 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
 
   String _getPetMood() {
     if (happinessLevel > 70) {
-      return "Happy";
+      return "Happy 😊";
     } else if (happinessLevel >= 30) {
-      return "Neutral";
+      return "Neutral 😐";
     } else {
-      return "Unhappy";
+      return "Unhappy 😢";
     }
   }
 
@@ -179,12 +179,12 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
             ),
             SizedBox(height: 16.0),
             Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                color: _getPetColor(),
-              ),
-            ),
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: _getPetColor(),
+                ),
+                child: Image.asset("assets/pet.png")),
             Text(
               'Mood: ${_getPetMood()}',
               style: TextStyle(fontSize: 20.0),
