@@ -16,7 +16,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   int happinessLevel = 50;
   int hungerLevel = 50;
   TextEditingController petNameController = TextEditingController();
-
+  int energyLevel= 100;
 // Function to increase happiness and update hunger when playing with the pet
   void _playWithPet() {
     setState(() {
