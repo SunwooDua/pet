@@ -22,6 +22,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     setState(() {
       happinessLevel = (happinessLevel + 10).clamp(0, 100);
       _updateHunger();
+      _updateEnergy(-20); //decrease energy by 20
     });
   }
 
@@ -30,6 +31,7 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     setState(() {
       hungerLevel = (hungerLevel - 10).clamp(0, 100);
       _updateHappiness();
+      _updateEnergy(10); //increase energy by 10
     });
   }
 
@@ -40,6 +42,11 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     } else {
       happinessLevel = (happinessLevel + 10).clamp(0, 100);
     }
+  }
+
+//update energy
+  void _updateEnergy(int change) {
+    energyLevel = (energyLevel + change).clamp(0, 100);
   }
 
 // Increase hunger level slightly when playing with the pet
@@ -88,6 +95,15 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text(
+              'Energy Level: $energyLevel',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            SizedBox(height: 8.0),
+            LinearProgressIndicator(
+              value: energyLevel / 100,
+            ),
+            SizedBox(height: 16.0),
             Container(
               width: 100,
               height: 100,
