@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() {
   runApp(MaterialApp(
@@ -16,7 +17,12 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   int happinessLevel = 50;
   int hungerLevel = 50;
   TextEditingController petNameController = TextEditingController();
-  int energyLevel = 100;
+
+  int energyLevel= 100;
+  Timer? _hungerTimer;
+  final int _winDuration = 1; // Duration in seconds (3 minutes)
+  int _winCounter = 0;
+  String selectedAction = 'Play';
 // Function to increase happiness and update hunger when playing with the pet
   void _playWithPet() {
     setState(() {
@@ -85,6 +91,74 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     });
   }
 
+  void _startHungerTimer() {
+    _hungerTimer = Timer.periodic(Duration(seconds: 30), (timer) {
+      setState(() {
+        _updateHunger();
+      });
+
+      if (hungerLevel == 100 && happinessLevel <= 10) {
+        _endGame("Game Over! Your pet is too hungry and unhappy.");
+        timer.cancel();
+      }
+
+      if (happinessLevel > 80) {
+        _winCounter++;
+        if (_winCounter >= _winDuration) {
+          _endGame("You Win! Your pet is very happy.");
+          timer.cancel();
+        }
+      } else {
+        _winCounter = 0; // Reset counter if happiness falls below 80
+      }
+    });
+  }
+
+  // Stop Timer
+  void _stopHungerTimer() {
+    if (_hungerTimer != null) {
+      _hungerTimer?.cancel();
+    }
+  }
+
+  // End the game and show a message
+  void _endGame(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Game Over'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              setState(() {
+                happinessLevel = 50;
+                hungerLevel = 50;
+                energyLevel = 100;
+                petName = "Your Pet"; // Reset the pet
+                petNameController.clear();
+                Navigator.of(context).pop();
+              });
+            },
+            child: Text('Restart'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startHungerTimer(); // Start hunger timer when the app starts
+  }
+
+  @override
+  void dispose() {
+    _stopHungerTimer();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,16 +205,36 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
               style: TextStyle(fontSize: 20.0),
             ),
             SizedBox(height: 32.0),
-            ElevatedButton(
-              onPressed: _playWithPet,
-              child: Text('Play with Your Pet'),
+            
+            DropdownButton<String>(
+              value: selectedAction,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedAction = newValue!;
+                });
+              },
+              items: <String>['Play', 'Feed']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
             SizedBox(height: 16.0),
+            
             ElevatedButton(
-              onPressed: _feedPet,
-              child: Text('Feed Your Pet'),
+              onPressed: () {
+                if (selectedAction == 'Play') {
+                  _playWithPet();
+                } else if (selectedAction == 'Feed') {
+                  _feedPet();
+                }
+              },
+              child: Text('Confirm Action'),
             ),
             SizedBox(height: 16.0),
+
             Container(
               width: 200,
               height: 50,
