@@ -70,11 +70,11 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
 
   String _getPetMood() {
     if (happinessLevel > 70) {
-      return "Happy";
+      return "Happy 😊";
     } else if (happinessLevel >= 30) {
-      return "Neutral";
+      return "Neutral 😐";
     } else {
-      return "Unhappy";
+      return "Unhappy 😢";
     }
   }
 
