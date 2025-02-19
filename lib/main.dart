@@ -80,6 +80,11 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
+              'Mood: ${_getPetMood()}',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            SizedBox(height: 16.0),
+            Text(
               'Name: $petName',
               style: TextStyle(fontSize: 20.0),
             ),
