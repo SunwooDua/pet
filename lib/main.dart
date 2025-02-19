@@ -15,6 +15,8 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
   String petName = "Your Pet";
   int happinessLevel = 50;
   int hungerLevel = 50;
+  TextEditingController petNameController = TextEditingController();
+
 // Function to increase happiness and update hunger when playing with the pet
   void _playWithPet() {
     setState(() {
@@ -69,6 +71,13 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
     }
   }
 
+  void _setPetName() {
+    setState(() {
+      petName =
+          petNameController.text.isEmpty ? "Your Pet" : petNameController.text;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,6 +123,22 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
             ElevatedButton(
               onPressed: _feedPet,
               child: Text('Feed Your Pet'),
+            ),
+            SizedBox(height: 16.0),
+            Container(
+              width: 200,
+              height: 50,
+              child: TextField(
+                controller: petNameController,
+                decoration: InputDecoration(
+                  hintText: 'Enter your pet\'s name',
+                ),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: _setPetName,
+              child: Text('Confirm Name'),
             ),
           ],
         ),
