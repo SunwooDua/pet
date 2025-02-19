@@ -79,6 +79,13 @@ class _DigitalPetAppState extends State<DigitalPetApp> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: _getPetColor(),
+              ),
+            ),
             Text(
               'Mood: ${_getPetMood()}',
               style: TextStyle(fontSize: 20.0),
